@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-MZ">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | NOC New Generation</title>
+    <style>
+        body { margin:0; font-family:sans-serif; background:#0f172a; display:flex; align-items:center; justify-content:center; height:100vh; color:#fff; }
+        .login-card { background:#1e293b; padding:40px; border-radius:20px; width:320px; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,0.5); }
+        input { width:100%; padding:12px; margin-bottom:10px; border-radius:8px; border:1px solid #334155; background:#0f172a; color:#fff; box-sizing:border-box; }
+        button { width:100%; padding:12px; border:none; border-radius:8px; background:#2563eb; color:#fff; font-weight:bold; cursor:pointer; }
+    </style>
+</head>
+<body>
+    <div class="login-card">
+        <h2>New<span>Generation</span></h2>
+        <p style="color:#94a3b8; font-size:12px;">Acesso Restrito ao Sistema NOC</p>
+        <form id="lForm">
+            <input type="text" id="user" placeholder="Utilizador" required>
+            <input type="password" id="pass" placeholder="Palavra-passe" required>
+            <button type="submit">Entrar no NOC</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('lForm').onsubmit = (e) => {
+            e.preventDefault();
+            const u = document.getElementById('user').value.toLowerCase();
+            const p = document.getElementById('pass').value;
+            // Credenciais NG2026
+            if((u === 'adamgy' || u === 'admin' || u === 'faume') && p === 'ng2026') {
+                localStorage.setItem('ng_auth', 'true');
+                localStorage.setItem('ng_user', u.toUpperCase());
+                window.location.href = 'dashboard.html';
+            } else { alert('Acesso Negado.'); }
+        };
+    </script>
+</body>
+</html>
