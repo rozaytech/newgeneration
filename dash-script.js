@@ -14,9 +14,11 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 
+// Proteção de Rota
 if (localStorage.getItem('ng_auth') !== 'true') window.location.href = 'login.html';
 document.getElementById('op-name').innerText = localStorage.getItem('ng_user');
 
+// Monitorar Orçamentos/Pedidos
 onValue(ref(db, 'orcamentos'), (snapshot) => {
     const tableBody = document.getElementById('table-body');
     tableBody.innerHTML = '';
@@ -32,15 +34,19 @@ onValue(ref(db, 'orcamentos'), (snapshot) => {
                     <td>${item.email}</td>
                     <td><span class="status-pill ${item.status.toLowerCase()}">${item.status}</span></td>
                     <td>
-                        <button onclick="window.concluir('${id}')" style="color:#10b981; background:none; border:1px solid #10b981; padding:5px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-check"></i></button>
-                        <button onclick="window.apagar('${id}')" style="color:#ef4444; background:none; border:1px solid #ef4444; padding:5px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-trash"></i></button>
+                        <button onclick="window.concluir('${id}')" style="background:none; border:1px solid #10b981; color:#10b981; padding:5px; border-radius:4px; cursor:pointer;"><i class="fa-solid fa-check"></i></button>
+                        <button onclick="window.apagar('${id}')" style="background:none; border:1px solid #ef4444; color:#ef4444; padding:5px; border-radius:4px; cursor:pointer; margin-left:5px;"><i class="fa-solid fa-trash"></i></button>
                     </td>
                 </tr>`;
         });
+    } else {
+        tableBody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding:20px;">Sem novos pedidos no sistema.</td></tr>';
     }
 });
 
 window.concluir = (id) => update(ref(db, `orcamentos/${id}`), { status: 'Concluído' });
-window.apagar = (id) => confirm('Apagar pedido?') && remove(ref(db, `orcamentos/${id}`));
+window.apagar = (id) => confirm('Apagar permanentemente?') && remove(ref(db, `orcamentos/${id}`));
 
-setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-MZ'); }, 1000);
+setInterval(() => {
+    document.getElementById('clock').innerText = new Date().toLocaleTimeString('pt-MZ');
+}, 1000);
